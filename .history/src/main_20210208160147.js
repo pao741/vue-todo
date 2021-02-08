@@ -1,12 +1,14 @@
 import Vue from 'vue';
 // import Vuex from 'vuex';
-// import VueRouter from 'vue-router';
+import VueRouter from 'vue-router';
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import firebase from 'firebase';
-import router from './router';
 
 import 'vuetify/dist/vuetify.min.css';
+
+import Login from './components/Login';
+import Main from './components/Main';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDDoWONGwbdeV8-j0yTCmUjzBNPDUFN7Q8',
@@ -24,8 +26,9 @@ firebase.analytics();
 Vue.config.productionTip = false;
 // Vue.use(Vuex);
 
+Vue.use(VueRouter);
+
 new Vue({
   vuetify,
-  router,
   render: (h) => h(App),
 }).$mount('#app');

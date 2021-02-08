@@ -5,21 +5,21 @@
         <router-link to="Login">Log in</router-link>
         <router-link to="Register">Register</router-link>
         <router-link to="HelloWorld">HelloWorld</router-link>
-        <router-link to="/">Main</router-link>
-        <router-view />
+        <router-link to="login"></router-link>
+        <Login />
       </div>
     </v-main>
   </v-app>
 </template>
 
 <script>
-// import Login from "./components/Login";
+import Login from "./components/Login";
 
 export default {
   name: "App",
 
   components: {
-    // Login
+    Login
   },
 
   data: () => ({

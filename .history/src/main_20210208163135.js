@@ -1,12 +1,15 @@
 import Vue from 'vue';
 // import Vuex from 'vuex';
-// import VueRouter from 'vue-router';
+import VueRouter from 'vue-router';
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import firebase from 'firebase';
-import router from './router';
 
 import 'vuetify/dist/vuetify.min.css';
+
+import Login from './components/Login';
+import Main from './components/Main';
+import Register from './components/Register';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDDoWONGwbdeV8-j0yTCmUjzBNPDUFN7Q8',
@@ -20,6 +23,23 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/login',
+      component: Login,
+    },
+    {
+      path: '/main',
+      component: Main,
+    },
+    {
+      path: '/register',
+      component: Register,
+    },
+  ],
+});
 
 Vue.config.productionTip = false;
 // Vue.use(Vuex);
