@@ -77,12 +77,6 @@ export default {
   //   name: "Log In"
   data: () => ({
     adding: false,
-    todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
-      { text: "Learn JavaScript ES6+ goodies", isDone: true },
-      { text: "Learn Vue", isDone: false },
-      { text: "Build something awesome", isDone: false }
-    ],
-    editing: null,
     items: [
       { header: "Today" },
       {
@@ -128,14 +122,6 @@ export default {
           // An error happened.
           alert(error);
         });
-    }
-  },
-  watch: {
-    todos: {
-      deep: true,
-      handler(newValue) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue));
-      }
     }
   }
 };

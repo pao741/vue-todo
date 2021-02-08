@@ -11,20 +11,67 @@
         >
       </v-col>
     </v-row>
-    <div class="text-center">
-      <v-dialog :value="adding" persistent width="500">
-        <v-card v-click-outside="">
-          <v-card-title class="headline grey lighten-2">
-            Fill in the form
-          </v-card-title>
+    <v-container>
+      <v-dialog :value="adding">
+        <v-card>
+          <v-card-title>Fill in the form</v-card-title>
+          <v-text-field
+            v-model="name"
+            :counter="10"
+            :rules="nameRules"
+            label="Name"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="email"
+            :rules="emailRules"
+            label="E-mail"
+            required
+          ></v-text-field>
+
+          <v-select
+            v-model="select"
+            :items="items"
+            :rules="[v => !!v || 'Item is required']"
+            label="Item"
+            required
+          ></v-select>
+
+          <v-checkbox
+            v-model="checkbox"
+            :rules="[v => !!v || 'You must agree to continue!']"
+            label="Do you agree?"
+            required
+          ></v-checkbox>
+
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="mr-4"
+            @click="validate"
+          >
+            Validate
+          </v-btn>
+
+          <v-btn color="error" class="mr-4" @click="reset">
+            Reset Form
+          </v-btn>
+
+          <v-btn color="warning" @click="resetValidation">
+            Reset Validation
+          </v-btn>
+          <v-row justify="center" class="ma-5">
+            <v-col sm="1"> </v-col>
+          </v-row>
           <v-row justify="center" class="ma-5">
             <v-col>
               <v-text-field class="header" placeholder="Title"></v-text-field
               ><v-text-field class="header" placeholder="Title"></v-text-field>
             </v-col>
           </v-row>
-          <v-row justify="center" class="ma-1">
-            <v-col>
+          <v-row justify="center" class="ma-5">
+            <v-col justify="center">
               <v-btn justify="center" color="success" @click="adding = false">
                 Submit
               </v-btn>
@@ -35,7 +82,7 @@
           </v-row>
         </v-card>
       </v-dialog>
-    </div>
+    </v-container>
     <v-card class="mx-auto">
       <v-toolbar color="primary" dark>
         <v-card-title>Todo List</v-card-title>
@@ -72,17 +119,10 @@
 <script>
 import firebase from "firebase";
 
-const LOCAL_STORAGE_KEY = "todo-app-vue";
 export default {
   //   name: "Log In"
   data: () => ({
     adding: false,
-    todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
-      { text: "Learn JavaScript ES6+ goodies", isDone: true },
-      { text: "Learn Vue", isDone: false },
-      { text: "Build something awesome", isDone: false }
-    ],
-    editing: null,
     items: [
       { header: "Today" },
       {
@@ -128,14 +168,6 @@ export default {
           // An error happened.
           alert(error);
         });
-    }
-  },
-  watch: {
-    todos: {
-      deep: true,
-      handler(newValue) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue));
-      }
     }
   }
 };

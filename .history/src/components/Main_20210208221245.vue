@@ -42,7 +42,7 @@
       </v-toolbar>
 
       <v-list three-line>
-        <template v-for="(item, index) in items">
+        <template v-for="(item, index) in todos">
           <v-subheader
             v-if="item.header"
             :key="item.header"
@@ -77,42 +77,13 @@ export default {
   //   name: "Log In"
   data: () => ({
     adding: false,
+    title: "Todos",
     todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
       { text: "Learn JavaScript ES6+ goodies", isDone: true },
       { text: "Learn Vue", isDone: false },
       { text: "Build something awesome", isDone: false }
     ],
-    editing: null,
-    items: [
-      { header: "Today" },
-      {
-        title: "Brunch this weekend?",
-        subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`
-      },
-      { divider: true, inset: true },
-      {
-        title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-        subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`
-      },
-      { divider: true, inset: true },
-      {
-        title: "Oui oui",
-        subtitle:
-          '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?'
-      },
-      { divider: true, inset: true },
-      {
-        title: "Birthday gift",
-        subtitle:
-          '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?'
-      },
-      { divider: true, inset: true },
-      {
-        title: "Recipe to try",
-        subtitle:
-          '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
-      }
-    ]
+    editing: null
   }),
   methods: {
     logOut() {
@@ -128,13 +99,13 @@ export default {
           // An error happened.
           alert(error);
         });
-    }
-  },
-  watch: {
-    todos: {
-      deep: true,
-      handler(newValue) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue));
+    },
+    watch: {
+      todos: {
+        deep: true,
+        handler(newValue) {
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue));
+        }
       }
     }
   }

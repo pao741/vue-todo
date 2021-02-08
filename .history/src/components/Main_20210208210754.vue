@@ -1,0 +1,82 @@
+<template>
+  <v-app>
+    <v-main>
+      <v-container>
+        <v-row justify="center" class="ma-5">
+          <v-col xs="12" sm="8">
+            <!-- <div>Hello World!</div> -->
+            <v-btn justify="center" color="error" @click="logOut">
+              Log out</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+    <v-card max-width="450" class="mx-auto">
+      <v-toolbar color="cyan" dark>
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+        <v-toolbar-title>Inbox</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+      </v-toolbar>
+
+      <v-list three-line>
+        <template v-for="(item, index) in items">
+          <v-subheader
+            v-if="item.header"
+            :key="item.header"
+            v-text="item.header"
+          ></v-subheader>
+
+          <v-divider
+            v-else-if="item.divider"
+            :key="index"
+            :inset="item.inset"
+          ></v-divider>
+
+          <v-list-item v-else :key="item.title">
+            <v-list-item-avatar>
+              <v-img :src="item.avatar"></v-img>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title v-html="item.title"></v-list-item-title>
+              <v-list-item-subtitle
+                v-html="item.subtitle"
+              ></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-card>
+  </v-app>
+</template>
+
+<script>
+import firebase from "firebase";
+
+export default {
+  //   name: "Log In"
+  methods: {
+    logOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          // Sign-out successful.
+          console.log("sign out successful");
+          this.$router.push("/login");
+        })
+        .catch(error => {
+          // An error happened.
+          alert(error);
+        });
+    }
+  }
+};
+</script>

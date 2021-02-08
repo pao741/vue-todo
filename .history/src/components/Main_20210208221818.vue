@@ -77,6 +77,7 @@ export default {
   //   name: "Log In"
   data: () => ({
     adding: false,
+    title: "Todos",
     todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
       { text: "Learn JavaScript ES6+ goodies", isDone: true },
       { text: "Learn Vue", isDone: false },
