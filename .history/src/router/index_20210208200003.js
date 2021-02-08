@@ -31,11 +31,17 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: {
+      authenticated: false,
+    },
   },
   {
     path: '/register',
     name: 'Register',
     component: Register,
+    meta: {
+      authenticated: false,
+    },
   },
 ];
 

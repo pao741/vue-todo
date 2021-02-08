@@ -16,11 +16,11 @@ const store = new Vuex.Store({
     authenticated: false,
   },
   actions: {
-    login(state) {
-      state.authenticated = true;
+    login() {
+      this.state.authenticated = true;
     },
-    logout(state) {
-      state.authenticated = false;
+    logout() {
+      this.state.authenticated = false;
     },
   },
 });

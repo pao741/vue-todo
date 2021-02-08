@@ -20,7 +20,9 @@ export default {
         .then(() => {
           // Sign-out successful.
           console.log("sign out successful");
-          this.$router.push("/login");
+          firebase.auth().onAuthStateChanged(() => {
+            this.$router.push("login");
+          });
         })
         .catch(error => {
           // An error happened.

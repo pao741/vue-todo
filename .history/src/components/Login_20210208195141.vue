@@ -59,9 +59,15 @@ export default {
         .signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
           console.log(user);
-          firebase.auth().onAuthStateChanged(() => {
-            this.$router.push("/");
-          });
+
+          const yourFunction = async () => {
+            await delay(5000);
+            console.log("Waited 5s");
+
+            await delay(5000);
+            console.log("Waited an additional 5s");
+          };
+          this.$router.push("/");
         })
         .catch(error => {
           alert(error);

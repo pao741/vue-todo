@@ -11,17 +11,19 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    v-model="email"
+                    name="Email"
                     label="Email"
                     type="text"
                   ></v-text-field>
                   <v-text-field
-                    v-model="password"
+                    id="password"
+                    name="password"
                     label="Password"
                     type="password"
                   ></v-text-field>
                   <v-text-field
-                    v-model="confirm"
+                    id="confirm"
+                    name="confirm"
                     label="Confirm"
                     type="password"
                   ></v-text-field>
@@ -29,7 +31,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="register">Register</v-btn>
+                <v-btn color="primary" to="/">Login</v-btn>
                 <v-btn color="primary" to="/login">Back</v-btn>
               </v-card-actions>
             </v-card>
@@ -61,14 +63,12 @@ export default {
     },
     register() {
       if (this.checkPassword) {
-        console.log(this.email);
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(userCredential => {
             // Signed in
             console.log(userCredential.user);
-            this.$router.push("login");
             // ...
           })
           .catch(error => {

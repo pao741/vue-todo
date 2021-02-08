@@ -13,14 +13,11 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    authenticated: false,
+    count: 0,
   },
-  actions: {
-    login(state) {
-      state.authenticated = true;
-    },
-    logout(state) {
-      state.authenticated = false;
+  mutations: {
+    increment(state) {
+      state.count++;
     },
   },
 });

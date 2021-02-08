@@ -11,20 +11,6 @@ import 'vuetify/dist/vuetify.min.css';
 Vue.config.productionTip = false;
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
-  state: {
-    authenticated: false,
-  },
-  actions: {
-    login(state) {
-      state.authenticated = true;
-    },
-    logout(state) {
-      state.authenticated = false;
-    },
-  },
-});
-
 new Vue({
   vuetify,
   router,

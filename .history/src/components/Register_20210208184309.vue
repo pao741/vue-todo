@@ -12,16 +12,19 @@
                 <v-form>
                   <v-text-field
                     v-model="email"
+                    name="email"
                     label="Email"
                     type="text"
                   ></v-text-field>
                   <v-text-field
                     v-model="password"
+                    name="password"
                     label="Password"
                     type="password"
                   ></v-text-field>
                   <v-text-field
                     v-model="confirm"
+                    name="confirm"
                     label="Confirm"
                     type="password"
                   ></v-text-field>

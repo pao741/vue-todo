@@ -2,7 +2,7 @@
   <v-content>
     <v-container>
       <div>Hello World!</div>
-      <v-btn color="error" @click="logOut"> Log out</v-btn>
+      <v-btn color="error" @click="$router.push('login')"> Log out</v-btn>
     </v-container>
   </v-content>
 </template>
@@ -17,10 +17,10 @@ export default {
       firebase
         .auth()
         .signOut()
-        .then(() => {
+        .then(res => {
           // Sign-out successful.
-          console.log("sign out successful");
-          this.$router.push("/login");
+          console.log(res);
+          this.$router.push("login");
         })
         .catch(error => {
           // An error happened.

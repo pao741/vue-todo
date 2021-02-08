@@ -11,17 +11,20 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    v-model="email"
+                    id="email"
+                    name="email"
                     label="Email"
                     type="text"
                   ></v-text-field>
                   <v-text-field
-                    v-model="password"
+                    id="password"
+                    name="password"
                     label="Password"
                     type="password"
                   ></v-text-field>
                   <v-text-field
-                    v-model="confirm"
+                    id="confirm"
+                    name="confirm"
                     label="Confirm"
                     type="password"
                   ></v-text-field>
@@ -68,7 +71,6 @@ export default {
           .then(userCredential => {
             // Signed in
             console.log(userCredential.user);
-            this.$router.push("login");
             // ...
           })
           .catch(error => {

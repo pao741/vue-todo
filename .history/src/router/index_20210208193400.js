@@ -10,6 +10,7 @@ import HelloWorld from '../components/HelloWorld';
 Vue.use(VueRouter);
 
 var authenticated = false;
+
 const routes = [
   {
     path: '/HelloWorld',
@@ -40,28 +41,27 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  modes: 'history',
+  modes: 'hash',
   routes,
-});
-
-firebase.auth().onAuthStateChanged((firebaseUser) => {
-  //   console.log('state is changing');
-  if (firebaseUser) {
-    authenticated = true;
-    // console.log('log in');
-    console.log(firebaseUser);
-
-    // this.$store.dispatch(state);
-  } else {
-    authenticated = false;
-    // console.log('not logged in');
-
-    // authenticated = false;
-  }
 });
 
 const beforeRouteEnter = (to, from, next) => {
   if (to.meta.authenticated) {
+    firebase.auth().onAuthStateChanged((firebaseUser) => {
+      console.log('state is changing');
+      if (firebaseUser) {
+        authenticated = true;
+        console.log('log in');
+        console.log(firebaseUser);
+
+        // this.$store.dispatch(state);
+      } else {
+        authenticated = false;
+        console.log('not logged in');
+
+        // authenticated = false;
+      }
+    });
     if (authenticated) {
       next();
     } else {

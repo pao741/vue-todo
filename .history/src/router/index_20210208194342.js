@@ -40,27 +40,28 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  modes: 'history',
+  modes: 'hash',
   routes,
 });
 
 firebase.auth().onAuthStateChanged((firebaseUser) => {
-  //   console.log('state is changing');
+  console.log('state is changing');
   if (firebaseUser) {
     authenticated = true;
-    // console.log('log in');
+    console.log('log in');
     console.log(firebaseUser);
 
     // this.$store.dispatch(state);
   } else {
     authenticated = false;
-    // console.log('not logged in');
+    console.log('not logged in');
 
     // authenticated = false;
   }
 });
 
 const beforeRouteEnter = (to, from, next) => {
+  setTimeout(function() {}, 10000);
   if (to.meta.authenticated) {
     if (authenticated) {
       next();
