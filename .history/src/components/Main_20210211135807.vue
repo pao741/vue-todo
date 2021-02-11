@@ -32,10 +32,7 @@
               class="mx-auto"
               justify="center"
               color="success"
-              @click="
-                adding = false;
-                add();
-              "
+              @click="printDate"
             >
               Submit
             </v-btn>
@@ -100,26 +97,28 @@ export default {
     dating: false,
     date: null,
     adding: false,
-    todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
-      {
-        title: "Learn JavaScript",
-        description: "some description",
-        isDone: true,
-        dueDate: null
-      },
-      {
-        title: "Learn Vue",
-        description: "more description",
-        isDone: false,
-        dueDate: null
-      },
-      {
-        title: "Build something awesome",
-        description: "also description",
-        isDone: false,
-        dueDate: "10-12-2021"
-      }
-    ],
+    todos:
+      // JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ||
+      [
+        {
+          title: "Learn JavaScript",
+          description: "some description",
+          isDone: true,
+          dueDate: null
+        },
+        {
+          title: "Learn Vue",
+          description: "more description",
+          isDone: false,
+          dueDate: null
+        },
+        {
+          title: "Build something awesome",
+          description: "also description",
+          isDone: false,
+          dueDate: "10-12-2021"
+        }
+      ],
     editing: null
   }),
   methods: {
@@ -141,11 +140,8 @@ export default {
       this.todos.push({
         title: this.title,
         description: this.description,
-        isDone: this.isDone
+        isDone: false
       });
-      this.title = "";
-      this.description = "";
-      this.isDone = null;
     },
     delete(item) {
       this.todos = this.todos.filter(function(obj) {

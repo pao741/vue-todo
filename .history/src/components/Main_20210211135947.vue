@@ -100,26 +100,28 @@ export default {
     dating: false,
     date: null,
     adding: false,
-    todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
-      {
-        title: "Learn JavaScript",
-        description: "some description",
-        isDone: true,
-        dueDate: null
-      },
-      {
-        title: "Learn Vue",
-        description: "more description",
-        isDone: false,
-        dueDate: null
-      },
-      {
-        title: "Build something awesome",
-        description: "also description",
-        isDone: false,
-        dueDate: "10-12-2021"
-      }
-    ],
+    todos:
+      // JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ||
+      [
+        {
+          title: "Learn JavaScript",
+          description: "some description",
+          isDone: true,
+          dueDate: null
+        },
+        {
+          title: "Learn Vue",
+          description: "more description",
+          isDone: false,
+          dueDate: null
+        },
+        {
+          title: "Build something awesome",
+          description: "also description",
+          isDone: false,
+          dueDate: "10-12-2021"
+        }
+      ],
     editing: null
   }),
   methods: {
@@ -143,9 +145,9 @@ export default {
         description: this.description,
         isDone: this.isDone
       });
-      this.title = "";
-      this.description = "";
-      this.isDone = null;
+      this.title = '',
+      this.description = '',
+      this.isDone = null,
     },
     delete(item) {
       this.todos = this.todos.filter(function(obj) {

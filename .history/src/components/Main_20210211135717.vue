@@ -8,16 +8,8 @@
           </v-card-title>
           <v-row justify="center" class="ma-5">
             <v-col>
-              <v-text-field
-                class="header"
-                v-model="title"
-                placeholder="Title"
-              ></v-text-field>
-              <v-text-field
-                class="header"
-                v-model="description"
-                placeholder="Description"
-              ></v-text-field>
+              <v-text-field class="header" placeholder="Title"></v-text-field>
+              <v-text-field class="header" placeholder="Title"></v-text-field>
               <v-switch
                 v-model="dating"
                 :label="`With date: ${dating.toString()}`"
@@ -32,10 +24,7 @@
               class="mx-auto"
               justify="center"
               color="success"
-              @click="
-                adding = false;
-                add();
-              "
+              @click="printDate"
             >
               Submit
             </v-btn>
@@ -77,9 +66,9 @@
               <v-list-item-subtitle
                 v-html="item.description"
               ></v-list-item-subtitle>
-              <v-list-item-subtitle>
-                Due date: {{ item.dueDate }}
-              </v-list-item-subtitle>
+              <v-list-item-subtitle
+                >Due date: {{ item.dueDate }}</v-list-item-subtitle
+              >
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -100,26 +89,28 @@ export default {
     dating: false,
     date: null,
     adding: false,
-    todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
-      {
-        title: "Learn JavaScript",
-        description: "some description",
-        isDone: true,
-        dueDate: null
-      },
-      {
-        title: "Learn Vue",
-        description: "more description",
-        isDone: false,
-        dueDate: null
-      },
-      {
-        title: "Build something awesome",
-        description: "also description",
-        isDone: false,
-        dueDate: "10-12-2021"
-      }
-    ],
+    todos:
+      // JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) ||
+      [
+        {
+          title: "Learn JavaScript",
+          description: "some description",
+          isDone: true,
+          dueDate: null
+        },
+        {
+          title: "Learn Vue",
+          description: "more description",
+          isDone: false,
+          dueDate: null
+        },
+        {
+          title: "Build something awesome",
+          description: "also description",
+          isDone: false,
+          dueDate: "10-12-2021"
+        }
+      ],
     editing: null
   }),
   methods: {
@@ -141,11 +132,8 @@ export default {
       this.todos.push({
         title: this.title,
         description: this.description,
-        isDone: this.isDone
+        isDone: false
       });
-      this.title = "";
-      this.description = "";
-      this.isDone = null;
     },
     delete(item) {
       this.todos = this.todos.filter(function(obj) {

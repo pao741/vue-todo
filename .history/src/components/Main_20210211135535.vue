@@ -8,16 +8,8 @@
           </v-card-title>
           <v-row justify="center" class="ma-5">
             <v-col>
-              <v-text-field
-                class="header"
-                v-model="title"
-                placeholder="Title"
-              ></v-text-field>
-              <v-text-field
-                class="header"
-                v-model="description"
-                placeholder="Description"
-              ></v-text-field>
+              <v-text-field class="header" placeholder="Title"></v-text-field>
+              <v-text-field class="header" placeholder="Title"></v-text-field>
               <v-switch
                 v-model="dating"
                 :label="`With date: ${dating.toString()}`"
@@ -32,10 +24,7 @@
               class="mx-auto"
               justify="center"
               color="success"
-              @click="
-                adding = false;
-                add();
-              "
+              @click="printDate"
             >
               Submit
             </v-btn>
@@ -77,9 +66,6 @@
               <v-list-item-subtitle
                 v-html="item.description"
               ></v-list-item-subtitle>
-              <v-list-item-subtitle>
-                Due date: {{ item.dueDate }}
-              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -120,7 +106,37 @@ export default {
         dueDate: "10-12-2021"
       }
     ],
-    editing: null
+    editing: null,
+    items: [
+      { header: "Today" },
+      {
+        title: "Brunch this weekend?",
+        subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`
+      },
+      { divider: true, inset: true },
+      {
+        title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
+        subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`
+      },
+      { divider: true, inset: true },
+      {
+        title: "Oui oui",
+        subtitle:
+          '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?'
+      },
+      { divider: true, inset: true },
+      {
+        title: "Birthday gift",
+        subtitle:
+          '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?'
+      },
+      { divider: true, inset: true },
+      {
+        title: "Recipe to try",
+        subtitle:
+          '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
+      }
+    ]
   }),
   methods: {
     logOut() {
@@ -141,11 +157,8 @@ export default {
       this.todos.push({
         title: this.title,
         description: this.description,
-        isDone: this.isDone
+        isDone: false
       });
-      this.title = "";
-      this.description = "";
-      this.isDone = null;
     },
     delete(item) {
       this.todos = this.todos.filter(function(obj) {

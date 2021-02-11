@@ -8,19 +8,11 @@
           </v-card-title>
           <v-row justify="center" class="ma-5">
             <v-col>
-              <v-text-field
-                class="header"
-                v-model="title"
-                placeholder="Title"
-              ></v-text-field>
-              <v-text-field
-                class="header"
-                v-model="description"
-                placeholder="Description"
-              ></v-text-field>
+              <v-text-field class="header" placeholder="Title"></v-text-field>
+              <v-text-field class="header" placeholder="Title"></v-text-field>
               <v-switch
                 v-model="dating"
-                :label="`With date: ${dating.toString()}`"
+                :label="`Dating: ${dating.toString()}`"
               ></v-switch>
               <v-row justify="center">
                 <v-date-picker v-model="date" v-if="dating"></v-date-picker>
@@ -28,25 +20,14 @@
             </v-col>
           </v-row>
           <v-row justify="center" class="ma-1">
-            <v-btn
-              class="mx-auto"
-              justify="center"
-              color="success"
-              @click="
-                adding = false;
-                add();
-              "
-            >
-              Submit
-            </v-btn>
-            <v-btn
-              class="mx-auto"
-              justify="center"
-              color="error"
-              @click="adding = false"
-            >
-              Close
-            </v-btn>
+            <v-col>
+              <v-btn justify="center" color="success" @click="adding = false">
+                Submit
+              </v-btn>
+              <v-btn justify="center" color="error" @click="adding = false">
+                Close
+              </v-btn>
+            </v-col>
           </v-row>
         </v-card>
       </v-dialog>
@@ -70,16 +51,25 @@
       </v-toolbar>
 
       <v-list three-line>
-        <template v-for="item in todos">
-          <v-list-item :key="item.title">
+        <template v-for="(item, index) in items">
+          <v-subheader
+            v-if="item.header"
+            :key="item.header"
+            v-text="item.header"
+          ></v-subheader>
+
+          <v-divider
+            v-else-if="item.divider"
+            :key="index"
+            :inset="item.inset"
+          ></v-divider>
+
+          <v-list-item v-else :key="item.title">
             <v-list-item-content>
               <v-list-item-title v-html="item.title"></v-list-item-title>
               <v-list-item-subtitle
-                v-html="item.description"
+                v-html="item.subtitle"
               ></v-list-item-subtitle>
-              <v-list-item-subtitle>
-                Due date: {{ item.dueDate }}
-              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -95,32 +85,45 @@ const LOCAL_STORAGE_KEY = "todo-app-vue";
 export default {
   //   name: "Log In"
   data: () => ({
-    title: "",
-    description: "",
     dating: false,
     date: null,
     adding: false,
     todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
-      {
-        title: "Learn JavaScript",
-        description: "some description",
-        isDone: true,
-        dueDate: null
-      },
-      {
-        title: "Learn Vue",
-        description: "more description",
-        isDone: false,
-        dueDate: null
-      },
-      {
-        title: "Build something awesome",
-        description: "also description",
-        isDone: false,
-        dueDate: "10-12-2021"
-      }
+      { text: "Learn JavaScript ES6+ goodies", isDone: true },
+      { text: "Learn Vue", isDone: false },
+      { text: "Build something awesome", isDone: false }
     ],
-    editing: null
+    editing: null,
+    items: [
+      { header: "Today" },
+      {
+        title: "Brunch this weekend?",
+        subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`
+      },
+      { divider: true, inset: true },
+      {
+        title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
+        subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`
+      },
+      { divider: true, inset: true },
+      {
+        title: "Oui oui",
+        subtitle:
+          '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?'
+      },
+      { divider: true, inset: true },
+      {
+        title: "Birthday gift",
+        subtitle:
+          '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?'
+      },
+      { divider: true, inset: true },
+      {
+        title: "Recipe to try",
+        subtitle:
+          '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
+      }
+    ]
   }),
   methods: {
     logOut() {
@@ -136,24 +139,6 @@ export default {
           // An error happened.
           alert(error);
         });
-    },
-    add() {
-      this.todos.push({
-        title: this.title,
-        description: this.description,
-        isDone: this.isDone
-      });
-      this.title = "";
-      this.description = "";
-      this.isDone = null;
-    },
-    delete(item) {
-      this.todos = this.todos.filter(function(obj) {
-        return obj !== item;
-      });
-    },
-    printDate() {
-      console.log(this.date);
     }
   },
   watch: {

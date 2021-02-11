@@ -19,7 +19,7 @@
                 placeholder="Description"
               ></v-text-field>
               <v-switch
-                v-model="dating"
+                v-model="dueDate"
                 :label="`With date: ${dating.toString()}`"
               ></v-switch>
               <v-row justify="center">
