@@ -65,7 +65,7 @@ export default {
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
-          .then(() => {
+          .then(userCredential => {
             // Signed in
             // console.log(userCredential.user);
             // console.log("successfully register");

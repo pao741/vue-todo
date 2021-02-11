@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import firebase from '../plugins/firebase';
+import firebase from '../plugins/firebase';
 
 import Login from '../components/Login';
 import Main from '../components/Main';
@@ -9,6 +9,7 @@ import HelloWorld from '../components/HelloWorld';
 
 Vue.use(VueRouter);
 
+var authenticated = false;
 const routes = [
   {
     path: '/HelloWorld',
@@ -39,16 +40,32 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'hash',
+  modes: 'history',
   routes,
 });
 
-const beforeRouteEnter = async (to, from, next) => {
-  if (to.meta.requiredAuthentication) {
-    if (Vue.$store.state.auth.authenticated) {
+firebase.auth().onAuthStateChanged((firebaseUser) => {
+  //   console.log('state is changing');
+  if (firebaseUser) {
+    authenticated = true;
+    // console.log('log in');
+    console.log(firebaseUser);
+
+    // this.$store.dispatch(state);
+  } else {
+    authenticated = false;
+    // console.log('not logged in');
+
+    // authenticated = false;
+  }
+});
+
+const beforeRouteEnter = (to, from, next) => {
+  if (to.meta.authenticated) {
+    if (authenticated) {
       next();
     } else {
-      next({ name: 'login' });
+      next({ name: 'Login' });
     }
   } else {
     next();
@@ -56,6 +73,12 @@ const beforeRouteEnter = async (to, from, next) => {
 };
 
 router.beforeEach(beforeRouteEnter);
+
+// beforeRouteEnter (to, from, next) {
+//     getPost(to.params.id, (err, post) => {
+//       next(vm => vm.setData(err, post))
+//     })
+//   },
 
 Vue.$router = router;
 

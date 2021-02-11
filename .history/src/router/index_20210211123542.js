@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import firebase from '../plugins/firebase';
+import firebase from '../plugins/firebase';
 
 import Login from '../components/Login';
 import Main from '../components/Main';
@@ -37,6 +37,22 @@ const routes = [
     component: Register,
   },
 ];
+
+firebase.auth().onAuthStateChanged((firebaseUser) => {
+  // const authenticated = false;
+  //   console.log('state is changing');
+  if (firebaseUser) {
+    // authenticated = true;
+    // console.log('log in');
+    console.log(firebaseUser);
+
+    // this.$store.dispatch(state);
+  } else {
+    // authenticated = false;
+    // console.log('not logged in');
+    // authenticated = false;
+  }
+});
 
 const router = new VueRouter({
   mode: 'hash',
