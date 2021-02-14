@@ -5,7 +5,7 @@ import VueRouter from 'vue-router';
 const Login = () => import('../components/Login');
 const Main = () => import('../components/Main');
 const Register = () => import('../components/Register');
-const HelloWorld = () => import('../components/HelloWorld');
+const HelloWorld = () => impor('../components/HelloWorld');
 
 Vue.use(VueRouter);
 
@@ -54,7 +54,7 @@ const beforeRouteEnter = async (to, from, next) => {
     if (Vue.$store.state.auth.authenticated) {
       next();
     } else {
-      next({ name: 'Login' });
+      next({ name: 'login' });
     }
   } else {
     next();

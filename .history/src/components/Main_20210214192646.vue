@@ -89,7 +89,7 @@
 </template>
 
 <script>
-// import firebase from "firebase";
+import firebase from "firebase";
 
 const LOCAL_STORAGE_KEY = "todo-app-vue";
 export default {
@@ -123,10 +123,10 @@ export default {
     editing: null
   }),
   methods: {
-    async logOut() {
+    logOut() {
       await this.$store.dispatch("auth/logout");
-      // console.log("authenticated and attempting to redirect to todo page");
-      await this.$router.push({ name: "Login" });
+        // console.log("authenticated and attempting to redirect to todo page");
+        await this.$router.push({ name: "Login" });
       // firebase
       //   .auth()
       //   .signOut()

@@ -17,7 +17,7 @@ export default {
     login(context, payload) {
       firebase
         .auth()
-        .signInWithEmailAndPassword(payload.email, payload.password)
+        .signInWithEmailAndPassword(payload.username, payload.password)
         .then(() => {
           // console.log(user);
           // this.$router.push("/");
@@ -26,17 +26,19 @@ export default {
         .catch((error) => {
           alert(error);
         });
+      // const authenticated =
+      //   payload.username === 'user' && payload.password === 'pass';
+
+      // context.commit('setAuthenticated', authenticated);
+      // if (!authenticated) {
+      //   context.commit('setErrorMessage', 'Invalid username or password');
+      // } else {
+      //   context.commit('setErrorMessage', '');
+      // }
     },
     logout(context) {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          context.commit('setAuthenticated', false);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      context.commit('auth/setAuthenticated', false);
+      context.commit('auth/setErrorMessage', '');
     },
   },
   getters: {

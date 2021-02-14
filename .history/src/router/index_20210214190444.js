@@ -54,7 +54,7 @@ const beforeRouteEnter = async (to, from, next) => {
     if (Vue.$store.state.auth.authenticated) {
       next();
     } else {
-      next({ name: 'Login' });
+      next({ name: 'login' });
     }
   } else {
     next();

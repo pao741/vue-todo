@@ -26,17 +26,27 @@ export default {
         .catch((error) => {
           alert(error);
         });
+      // const authenticated =
+      //   payload.username === 'user' && payload.password === 'pass';
+
+      // context.commit('setAuthenticated', authenticated);
+      // if (!authenticated) {
+      //   context.commit('setErrorMessage', 'Invalid username or password');
+      // } else {
+      //   context.commit('setErrorMessage', '');
+      // }
     },
     logout(context) {
       firebase
         .auth()
-        .signOut()
-        .then(() => {
-          context.commit('setAuthenticated', false);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+        .signOut().then(() => {
+          context.commit('auth/setAuthenticated', false);
+      context.commit('auth/setErrorMessage', '');
+        }).catch(error => {
+          //     // An error happened.
+          //     alert(error);
+          //   });
+      
     },
   },
   getters: {

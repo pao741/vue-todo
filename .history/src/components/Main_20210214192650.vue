@@ -89,7 +89,7 @@
 </template>
 
 <script>
-// import firebase from "firebase";
+import firebase from "firebase";
 
 const LOCAL_STORAGE_KEY = "todo-app-vue";
 export default {

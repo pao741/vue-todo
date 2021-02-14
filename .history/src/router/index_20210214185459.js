@@ -2,10 +2,10 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 // import firebase from '../plugins/firebase';
 
-const Login = () => import('../components/Login');
-const Main = () => import('../components/Main');
-const Register = () => import('../components/Register');
-const HelloWorld = () => import('../components/HelloWorld');
+import Login from '../components/Login';
+import Main from '../components/Main';
+import Register from '../components/Register';
+import HelloWorld from '../components/HelloWorld';
 
 Vue.use(VueRouter);
 
@@ -30,17 +30,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: {
-      requiredAuthentication: false,
-    },
   },
   {
     path: '/register',
     name: 'Register',
     component: Register,
-    meta: {
-      requiredAuthentication: false,
-    },
   },
 ];
 
@@ -54,7 +48,7 @@ const beforeRouteEnter = async (to, from, next) => {
     if (Vue.$store.state.auth.authenticated) {
       next();
     } else {
-      next({ name: 'Login' });
+      next({ name: 'login' });
     }
   } else {
     next();

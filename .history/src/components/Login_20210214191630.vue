@@ -38,7 +38,7 @@
 </template>
 
 <script>
-// import firebase from "firebase";
+import firebase from "firebase";
 
 export default {
   name: "Login",
@@ -54,14 +54,24 @@ export default {
   methods: {
     async login() {
       await this.$store.dispatch("auth/login", {
-        email: this.email,
+        username: this.username,
         password: this.password
       });
       if (this.$store.state.auth.authenticated) {
-        // console.log("authenticated and attempting to redirect to todo page");
-        await this.$router.push({ name: "Main" });
+        console.log("authenticated and attempting to redirect to todo page");
+        // await this.$router.push();
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then(() => {
+            // console.log(user);
+            this.$router.push({ name: "Main" });
+          })
+          .catch(error => {
+            alert(error);
+          });
       }
-      //
+      // console.log(this.email);
       // firebase
       //   .auth()
       //   .signInWithEmailAndPassword(this.email, this.password)
