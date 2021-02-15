@@ -24,7 +24,9 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="login">Login</v-btn>
+                <v-btn color="primary" @click="login" @keyup.enter="login"
+                  >Login</v-btn
+                >
                 <v-btn color="primary" @click="$router.push('register')"
                   >Register</v-btn
                 >
@@ -38,40 +40,36 @@
 </template>
 
 <script>
-// import firebase from "firebase";
+import firebase from "firebase";
 
 export default {
   name: "Login",
-  props: {
-    source: String
-  },
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      errorMessage: ""
     };
   },
   methods: {
     async login() {
-      await this.$store.dispatch("auth/login", {
-        email: this.email,
-        password: this.password
-      });
-      if (this.$store.state.auth.authenticated) {
-        // console.log("authenticated and attempting to redirect to todo page");
-        await this.$router.push({ name: "Main" });
+      try {
+        const response = await firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password);
+        if (response) {
+          await this.$store.dispatch(
+            "auth/setAuthenticatedUser",
+            response.user
+          );
+          this.$router.push("/");
+        } else {
+          console.log("Error occur");
+        }
+      } catch (e) {
+        alert(e);
+        this.errorMessage = e.message;
       }
-      //
-      // firebase
-      //   .auth()
-      //   .signInWithEmailAndPassword(this.email, this.password)
-      //   .then(() => {
-      //     // console.log(user);
-      //     this.$router.push("/");
-      //   })
-      //   .catch(error => {
-      //     alert(error);
-      //   });
     }
   }
 };
