@@ -1,90 +1,91 @@
 <template>
   <v-app>
-    <div class="text-center">
-      <v-dialog v-model="adding" @click:outside="clear" width="500">
-        <v-card>
-          <v-card-title class="headline grey lighten-2">
-            Fill in the form
-          </v-card-title>
-          <v-row justify="center" class="ma-5">
-            <v-col>
-              <v-text-field
-                class="header"
-                v-model="title"
-                placeholder="Title"
-              ></v-text-field>
-              <v-text-field
-                class="header"
-                v-model="description"
-                placeholder="Description"
-              ></v-text-field>
-              <v-switch
-                v-model="dating"
-                :label="`With date: ${dating.toString()}`"
-              ></v-switch>
-              <v-row justify="center">
-                <v-date-picker v-model="date" v-if="dating"></v-date-picker>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row justify="center" class="ma-1">
-            <v-btn
-              class="mx-auto"
-              justify="center"
-              color="success"
-              @click="
-                adding = false;
-                createTodo();
-              "
-            >
-              Submit
-            </v-btn>
-            <v-btn
-              class="mx-auto"
-              justify="center"
-              color="error"
-              @click="adding = false"
-            >
-              Close
-            </v-btn>
-          </v-row>
-        </v-card>
-      </v-dialog>
-    </div>
-    <v-card class="mx-auto">
-      <v-row justify="center" class="ma-5">
-        <v-btn
-          class="mx-auto"
-          justify="center"
-          color="success"
-          @click="adding = true"
-        >
-          Add
-        </v-btn>
-        <v-btn class="mx-auto" justify="center" color="error" @click="logOut"
-          >Log out</v-btn
-        >
-      </v-row>
-      <v-toolbar color="primary" dark>
-        <v-card-title>Todo List</v-card-title>
-      </v-toolbar>
+    <v-container>
+      <div class="text-center">
+        <v-dialog v-model="adding" @click:outside="clear" width="500">
+          <v-card>
+            <v-card-title class="headline grey lighten-2">
+              Fill in the form
+            </v-card-title>
+            <v-row justify="center" class="ma-5">
+              <v-col>
+                <v-text-field
+                  class="header"
+                  v-model="title"
+                  placeholder="Title"
+                ></v-text-field>
+                <v-text-field
+                  class="header"
+                  v-model="description"
+                  placeholder="Description"
+                ></v-text-field>
+                <v-switch
+                  v-model="dating"
+                  :label="`With date: ${dating.toString()}`"
+                ></v-switch>
+                <v-row justify="center">
+                  <v-date-picker v-model="date" v-if="dating"></v-date-picker>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-row justify="center" class="ma-1">
+              <v-btn
+                class="mx-auto"
+                justify="center"
+                color="success"
+                @click="
+                  adding = false;
+                  createTodo();
+                "
+              >
+                Submit
+              </v-btn>
+              <v-btn
+                class="mx-auto"
+                justify="center"
+                color="error"
+                @click="adding = false"
+              >
+                Close
+              </v-btn>
+            </v-row>
+          </v-card>
+        </v-dialog>
+      </div>
+      <v-card class="mx-auto">
+        <v-row justify="center" class="ma-5">
+          <v-btn
+            class="mx-auto"
+            justify="center"
+            color="success"
+            @click="adding = true"
+          >
+            Add
+          </v-btn>
+          <v-btn class="mx-auto" justify="center" color="error" @click="logOut"
+            >Log out</v-btn
+          >
+        </v-row>
+        <v-toolbar color="primary" dark>
+          <v-card-title>Todo List</v-card-title>
+        </v-toolbar>
 
-      <v-list three-line>
-        <template v-for="item in todos">
-          <v-list-item :key="item.title">
+        <v-list three-line>
+          <v-list-item v-for="item in todos" v-bind:key="item.date">
             <v-list-item-content>
               <v-list-item-title v-html="item.title"></v-list-item-title>
               <v-list-item-subtitle
                 v-html="item.description"
               ></v-list-item-subtitle>
               <v-list-item-subtitle>
-                Due date: {{ item.dueDate }}
+                Due date: {{ item.date }}
               </v-list-item-subtitle>
+              <v-checkbox v-model="item.isDone"></v-checkbox>
             </v-list-item-content>
           </v-list-item>
-        </template>
-      </v-list>
-    </v-card>
+        </v-list>
+      </v-card>
+    </v-container>
   </v-app>
 </template>
 
@@ -92,7 +93,6 @@
 import firebase from 'firebase';
 import 'firebase/database';
 
-const LOCAL_STORAGE_KEY = 'todo-app-vue';
 const database = firebase.database();
 
 export default {
@@ -115,11 +115,17 @@ export default {
       this.todos = snapshot.val();
     });
   },
+  computed: {
+    // orderedTodos() {
+    // return _.orderBy(this.todos, 'name')
+    // }
+  },
   methods: {
     createTodo() {
       this.todosRef.push({
         title: this.title.trim(),
         description: this.description.trim(),
+        date: this.date,
         isDone: false,
       });
       this.title = '';
@@ -166,14 +172,6 @@ export default {
       this.title = '';
       this.description = '';
       this.date = null;
-    },
-  },
-  watch: {
-    todos: {
-      deep: true,
-      handler(newValue) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue));
-      },
     },
   },
 };
