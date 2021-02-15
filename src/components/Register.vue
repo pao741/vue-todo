@@ -45,9 +45,6 @@ import firebase from "firebase";
 
 export default {
   name: "Register",
-  props: {
-    source: String
-  },
   data() {
     return {
       email: "",
