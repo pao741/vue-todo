@@ -5,19 +5,10 @@ import VueRouter from 'vue-router';
 const Login = () => import('../components/Login');
 const Main = () => import('../components/Main');
 const Register = () => import('../components/Register');
-const HelloWorld = () => import('../components/HelloWorld');
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/HelloWorld',
-    name: 'HelloWorld',
-    component: HelloWorld,
-    meta: {
-      requiredAuthentication: true,
-    },
-  },
   {
     path: '/',
     name: 'Main',

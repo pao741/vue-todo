@@ -4,7 +4,6 @@
       <div>
         <router-link to="Login">Log in</router-link>
         <router-link to="Register">Register</router-link>
-        <router-link to="HelloWorld">HelloWorld</router-link>
         <router-link to="/">Main</router-link>
         <router-view />
       </div>
