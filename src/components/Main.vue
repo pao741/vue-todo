@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <div class="text-center">
-      <v-dialog v-model="adding" @click:outside="adding = false" width="500">
-        <v-card v-click-outside="">
+      <v-dialog v-model="adding" @click:outside="clear" width="500">
+        <v-card>
           <v-card-title class="headline grey lighten-2">
             Fill in the form
           </v-card-title>
@@ -34,7 +34,7 @@
               color="success"
               @click="
                 adding = false;
-                add();
+                createTodo();
               "
             >
               Submit
@@ -89,53 +89,69 @@
 </template>
 
 <script>
-// import firebase from "firebase";
+import firebase from 'firebase';
+import 'firebase/database';
 
-const LOCAL_STORAGE_KEY = "todo-app-vue";
+const LOCAL_STORAGE_KEY = 'todo-app-vue';
+const database = firebase.database();
+
 export default {
   //   name: "Log In"
   data: () => ({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     dating: false,
     date: null,
     adding: false,
-    todos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [
-      {
-        title: "Learn JavaScript",
-        description: "some description",
-        isDone: true,
-        dueDate: null
-      },
-      {
-        title: "Learn Vue",
-        description: "more description",
-        isDone: false,
-        dueDate: null
-      },
-      {
-        title: "Build something awesome",
-        description: "also description",
-        isDone: false,
-        dueDate: "10-12-2021"
-      }
-    ],
-    editing: null
+    todos: null,
+    editing: null,
+    todosRef: null,
   }),
+  created() {
+    this.todosRef = database.ref(`/users/${this.$store.state.auth.user.uid}`);
+  },
+  mounted() {
+    this.todosRef.on('value', (snapshot) => {
+      this.todos = snapshot.val();
+    });
+  },
   methods: {
+    createTodo() {
+      this.todosRef.push({
+        title: this.title.trim(),
+        description: this.description.trim(),
+        isDone: false,
+      });
+      this.title = '';
+      this.description = '';
+      // this.isDone = null;
+    },
     async logOut() {
-      await this.$store.dispatch("auth/logout");
-      // console.log("authenticated and attempting to redirect to todo page");
-      await this.$router.push({ name: "Login" });
+      try {
+        const response = await firebase.auth().signOut();
+        this.$router.push('/login');
+        if (response) {
+          //   await this.$store.dispatch(
+          //     'auth/setAuthenticatedUser',
+          //     response.user
+          //   );
+          //   this.$router.push('/login');
+          // } else {
+          //   console.log('Error occur');
+        }
+      } catch (e) {
+        alert(e);
+        // this.errorMessage = e.message;
+      }
     },
     add() {
       this.todos.push({
         title: this.title,
         description: this.description,
-        isDone: this.isDone
+        isDone: this.isDone,
       });
-      this.title = "";
-      this.description = "";
+      this.title = '';
+      this.description = '';
       this.isDone = null;
     },
     delete(item) {
@@ -145,15 +161,20 @@ export default {
     },
     printDate() {
       console.log(this.date);
-    }
+    },
+    clear() {
+      this.title = '';
+      this.description = '';
+      this.date = null;
+    },
   },
   watch: {
     todos: {
       deep: true,
       handler(newValue) {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue));
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

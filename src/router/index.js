@@ -43,10 +43,10 @@ const router = new VueRouter({
 const beforeRouteEnter = async (to, from, next) => {
   if (to.meta.requiredAuthentication) {
     if (Vue.$store.getters['auth/authenticated']) {
-      console.log('is authenticated');
+      // console.log('is authenticated');
       next();
     } else {
-      console.log('not authenticated');
+      // console.log('not authenticated');
       next({ name: 'Login' });
     }
   } else {
