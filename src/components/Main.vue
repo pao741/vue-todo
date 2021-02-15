@@ -127,16 +127,6 @@ export default {
       await this.$store.dispatch("auth/logout");
       // console.log("authenticated and attempting to redirect to todo page");
       await this.$router.push({ name: "Login" });
-      // firebase
-      //   .auth()
-      //   .signOut()
-      //   .then(() => {
-      //     this.$router.push("/login");
-      //   })
-      //   .catch(error => {
-      //     // An error happened.
-      //     alert(error);
-      //   });
     },
     add() {
       this.todos.push({
