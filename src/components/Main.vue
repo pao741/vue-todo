@@ -68,11 +68,14 @@
         </v-row>
         <v-toolbar color="primary" dark>
           <v-card-title>Todo List</v-card-title>
+          <v-card-subtitle>Total: 0</v-card-subtitle>
+          <v-card-subtitle>Done: 0</v-card-subtitle>
         </v-toolbar>
         <v-progress-linear
           value="50"
           background-color="green lighten-3"
           color="green lighten-1"
+          striped
         ></v-progress-linear>
         <v-list three-line>
           <v-list-item v-for="item in todos" v-bind:key="item.date">
