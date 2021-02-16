@@ -51,6 +51,52 @@
             </v-row>
           </v-card>
         </v-dialog>
+        <v-dialog v-model="editing" @click:outside="clear" width="500">
+          <v-card>
+            <v-card-title class="headline grey lighten-2">
+              Editing
+            </v-card-title>
+            <v-row justify="center" class="ma-5">
+              <v-col>
+                <v-text-field
+                  class="header"
+                  v-model="title"
+                  placeholder="Title"
+                ></v-text-field>
+                <v-text-field
+                  class="header"
+                  v-model="description"
+                  placeholder="Description"
+                ></v-text-field>
+                <v-switch
+                  v-model="dating"
+                  :label="`With date: ${dating.toString()}`"
+                ></v-switch>
+                <v-row justify="center">
+                  <v-date-picker v-model="date" v-if="dating"></v-date-picker>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-row justify="center" class="ma-1">
+              <v-btn
+                class="mx-auto"
+                justify="center"
+                color="success"
+                @click="editing = false"
+              >
+                Submit
+              </v-btn>
+              <v-btn
+                class="mx-auto"
+                justify="center"
+                color="error"
+                @click="editing = false"
+              >
+                Close
+              </v-btn>
+            </v-row>
+          </v-card>
+        </v-dialog>
       </div>
       <v-card class="mx-auto">
         <v-row justify="center" class="ma-5">
@@ -72,16 +118,23 @@
 
         <v-list three-line>
           <v-list-item v-for="item in todos" v-bind:key="item.date">
-            <v-list-item-content>
-              <v-list-item-title v-html="item.title"></v-list-item-title>
-              <v-list-item-subtitle
-                v-html="item.description"
-              ></v-list-item-subtitle>
-              <v-list-item-subtitle>
-                Due date: {{ item.date }}
-              </v-list-item-subtitle>
-              <v-checkbox v-model="item.isDone"></v-checkbox>
-            </v-list-item-content>
+            <v-row>
+              <v-col>
+                <v-list-item-content>
+                  <v-list-item-title v-html="item.title"></v-list-item-title>
+                  <v-list-item-subtitle
+                    v-html="item.description"
+                  ></v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    Due date: {{ item.date }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-col>
+              <v-col md="2">
+                <v-btn class="mx-auto" @click="editing = true">Edit</v-btn>
+                <v-checkbox v-model="item.isDone"></v-checkbox>
+              </v-col>
+            </v-row>
           </v-list-item>
         </v-list>
       </v-card>
@@ -90,28 +143,28 @@
 </template>
 
 <script>
-import firebase from 'firebase';
-import 'firebase/database';
+import firebase from "firebase";
+import "firebase/database";
 
 const database = firebase.database();
 
 export default {
   //   name: "Log In"
   data: () => ({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     dating: false,
     date: null,
     adding: false,
     todos: null,
-    editing: null,
+    editing: false,
     todosRef: null,
   }),
   created() {
     this.todosRef = database.ref(`/users/${this.$store.state.auth.user.uid}`);
   },
   mounted() {
-    this.todosRef.on('value', (snapshot) => {
+    this.todosRef.on("value", (snapshot) => {
       this.todos = snapshot.val();
     });
   },
@@ -128,14 +181,14 @@ export default {
         date: this.date,
         isDone: false,
       });
-      this.title = '';
-      this.description = '';
+      this.title = "";
+      this.description = "";
       // this.isDone = null;
     },
     async logOut() {
       try {
         const response = await firebase.auth().signOut();
-        this.$router.push('/login');
+        this.$router.push("/login");
         if (response) {
           //   await this.$store.dispatch(
           //     'auth/setAuthenticatedUser',
@@ -156,8 +209,8 @@ export default {
         description: this.description,
         isDone: this.isDone,
       });
-      this.title = '';
-      this.description = '';
+      this.title = "";
+      this.description = "";
       this.isDone = null;
     },
     delete(item) {
@@ -169,8 +222,8 @@ export default {
       console.log(this.date);
     },
     clear() {
-      this.title = '';
-      this.description = '';
+      this.title = "";
+      this.description = "";
       this.date = null;
     },
   },
