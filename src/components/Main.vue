@@ -51,52 +51,6 @@
             </v-row>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="editing" @click:outside="clear" width="500">
-          <v-card>
-            <v-card-title class="headline grey lighten-2">
-              Editing
-            </v-card-title>
-            <v-row justify="center" class="ma-5">
-              <v-col>
-                <v-text-field
-                  class="header"
-                  v-model="title"
-                  placeholder="Title"
-                ></v-text-field>
-                <v-text-field
-                  class="header"
-                  v-model="description"
-                  placeholder="Description"
-                ></v-text-field>
-                <v-switch
-                  v-model="dating"
-                  :label="`With date: ${dating.toString()}`"
-                ></v-switch>
-                <v-row justify="center">
-                  <v-date-picker v-model="date" v-if="dating"></v-date-picker>
-                </v-row>
-              </v-col>
-            </v-row>
-            <v-row justify="center" class="ma-1">
-              <v-btn
-                class="mx-auto"
-                justify="center"
-                color="success"
-                @click="editing = false"
-              >
-                Submit
-              </v-btn>
-              <v-btn
-                class="mx-auto"
-                justify="center"
-                color="error"
-                @click="editing = false"
-              >
-                Close
-              </v-btn>
-            </v-row>
-          </v-card>
-        </v-dialog>
       </div>
       <v-card class="mx-auto">
         <v-row justify="center" class="ma-5">
@@ -115,7 +69,11 @@
         <v-toolbar color="primary" dark>
           <v-card-title>Todo List</v-card-title>
         </v-toolbar>
-
+        <v-progress-linear
+          value="50"
+          background-color="green lighten-3"
+          color="green lighten-1"
+        ></v-progress-linear>
         <v-list three-line>
           <v-list-item v-for="item in todos" v-bind:key="item.date">
             <v-row>
@@ -131,7 +89,6 @@
                 </v-list-item-content>
               </v-col>
               <v-col md="2">
-                <v-btn class="mx-auto" @click="editing = true">Edit</v-btn>
                 <v-checkbox v-model="item.isDone"></v-checkbox>
               </v-col>
             </v-row>
@@ -157,7 +114,6 @@ export default {
     date: null,
     adding: false,
     todos: null,
-    editing: false,
     todosRef: null,
   }),
   created() {
@@ -187,17 +143,8 @@ export default {
     },
     async logOut() {
       try {
-        const response = await firebase.auth().signOut();
+        await firebase.auth().signOut();
         this.$router.push("/login");
-        if (response) {
-          //   await this.$store.dispatch(
-          //     'auth/setAuthenticatedUser',
-          //     response.user
-          //   );
-          //   this.$router.push('/login');
-          // } else {
-          //   console.log('Error occur');
-        }
       } catch (e) {
         alert(e);
         // this.errorMessage = e.message;
@@ -213,18 +160,22 @@ export default {
       this.description = "";
       this.isDone = null;
     },
-    delete(item) {
-      this.todos = this.todos.filter(function(obj) {
-        return obj !== item;
-      });
-    },
-    printDate() {
-      console.log(this.date);
+    delete() {
+      database.ref(`/users/${this.$store.state.auth.data.id}`).set({});
     },
     clear() {
       this.title = "";
       this.description = "";
       this.date = null;
+    },
+    progress() {
+      let count = 0;
+      this.todos.forEach((item) => {
+        if (item.isDone) {
+          count += 1;
+        }
+      });
+      return count / this.todos.length;
     },
   },
 };
